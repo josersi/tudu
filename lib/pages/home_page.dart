@@ -78,6 +78,27 @@ class _TuduHomePageState extends State<TuduHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          PopupMenuButton<int>(
+            icon: Icon(Icons.more_vert),
+            onSelected: (int result) { print("Result: " + result.toString()); },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+              const PopupMenuItem(
+                value: 1,
+                child: Text('Settings')
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem(
+                value: 2,
+                child: Text('About')
+              ),
+              const PopupMenuItem(
+                value: 3,
+                child: Text('Help')
+              )
+            ],
+          )
+        ],
       ),
       body: FutureBuilder<List<TuduModel>>(
         future: _tuduService.getAllTudus(),
