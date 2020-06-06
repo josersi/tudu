@@ -1,6 +1,6 @@
 # tudu
 
-[![Project status](https://img.shields.io/badge/status-pre%20alpha-dodgerblue.svg)](https://shields.io/)
+[![GitHub version](https://badge.fury.io/gh/josersi%2Ftudu.svg)](https://badge.fury.io/gh/josersi%2Ftudu)
 
 A simple **TODO** app based on Flutter.
 
