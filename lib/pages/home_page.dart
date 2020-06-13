@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:intl/intl.dart';
 import 'package:tudu/models/tudu_model.dart';
 import 'package:tudu/service/tudu_service.dart';
+import 'package:tudu/utils/asset_util.dart';
 
 class TuduHomePage extends StatefulWidget {
   TuduHomePage({Key key, this.title}) : super(key: key);
@@ -18,7 +20,8 @@ class _TuduHomePageState extends State<TuduHomePage> {
     final String tuduMessage = await _queryTuduMessage(this.context);
 
     if (tuduMessage.isNotEmpty) {
-      await _tuduService.insertTudu(new TuduModel(UniqueKey().hashCode.toString(), tuduMessage, DateTime.now()));
+      final TuduModel tudu = new TuduModel(UniqueKey().hashCode.toString(), tuduMessage, DateTime.now());
+      await _tuduService.insertTudu(tudu);
       setState(() => {});
     }
   }
@@ -81,20 +84,20 @@ class _TuduHomePageState extends State<TuduHomePage> {
         actions: <Widget>[
           PopupMenuButton<int>(
             icon: Icon(Icons.more_vert),
-            onSelected: (int result) { print("Result: " + result.toString()); },
+            onSelected: (int result) async {
+              PackageInfo packageInfo = await PackageInfo.fromPlatform();
+              String legalNotice = await AssetUtil.getAsset("legal_notice.txt");
+
+              showAboutDialog(
+                context: context,
+                applicationVersion: packageInfo.version,
+                applicationLegalese: legalNotice
+              );
+            },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
               const PopupMenuItem(
                 value: 1,
-                child: Text('Settings')
-              ),
-              const PopupMenuDivider(),
-              const PopupMenuItem(
-                value: 2,
-                child: Text('About')
-              ),
-              const PopupMenuItem(
-                value: 3,
-                child: Text('Help')
+                child: Text('About'),
               )
             ],
           )
